@@ -1,6 +1,7 @@
 package com.vangivang.entity;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.math.Vector2;
 import com.vangivang.game.TextureManager;
 
@@ -15,7 +16,15 @@ public class Player extends Entity {
 
     @Override
     public void update() {
-        mDirection = mDirection.scl(Gdx.graphics.getDeltaTime());
         mPosition.add(mDirection);
+
+        if (Gdx.input.isKeyPressed(Input.Keys.D)){
+            setDirection(300, 0);
+        } else if (Gdx.input.isKeyPressed(Input.Keys.A)){
+            setDirection(-300, 0);
+        } else {
+            setDirection(0, 0);
+        }
+
     }
 }

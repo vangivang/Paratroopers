@@ -1,5 +1,6 @@
 package com.vangivang.entity;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
@@ -31,5 +32,6 @@ public abstract class Entity {
 
     public void setDirection(float x, float y){
         mDirection.set(x, y);
+        mDirection.scl(Gdx.graphics.getDeltaTime());
     }
 }

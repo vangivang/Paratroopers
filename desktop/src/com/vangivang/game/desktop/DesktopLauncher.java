@@ -7,6 +7,9 @@ import com.vangivang.game.MainGame;
 public class DesktopLauncher {
 	public static void main (String[] arg) {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
+        config.title = "Paratroopers";
+        config.width = MainGame.WIDTH;
+        config.height = MainGame.HEIGHT;
 		new LwjglApplication(new MainGame(), config);
 	}
 }
