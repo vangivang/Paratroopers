@@ -16,7 +16,7 @@ public class EntityManager {
     private Player mPlayer;
 
     public EntityManager(int enemyAmount){
-        mPlayer = new Player(new Vector2(240,15), new Vector2(0,0));
+        mPlayer = new Player(new Vector2(240,15), new Vector2(0,0), this);
         for (int i = 0; i < enemyAmount; i++) {
             float y = MathUtils.random((MainGame.HEIGHT / 3) * 2, MainGame.HEIGHT - TextureManager.ENEMY.getHeight());
             float x = MathUtils.random(MainGame.WIDTH, MainGame.WIDTH * 2);
@@ -30,7 +30,14 @@ public class EntityManager {
             e.update();
         }
 
+        for (Missle m : getMissiles()){
+            if (m.mPosition.y > MainGame.HEIGHT){
+                mEntities.removeValue(m, false);
+            }
+        }
+
         mPlayer.update();
+        checkColissions();
 
     }
 
@@ -44,5 +51,42 @@ public class EntityManager {
 
     public void addEntity(Entity entity){
         mEntities.add(entity);
+    }
+
+    private void checkColissions(){
+        for (Enemy e : getEnemies()){
+            for (Missle m : getMissiles()){
+                if (e.getBounds().overlaps(m.getBounds())){
+                    mEntities.removeValue(e, false);
+                    mEntities.removeValue(m, false);
+                }
+            }
+        }
+    }
+
+    public Array<Enemy> getEnemies(){
+        Array<Enemy> ret = new Array<Enemy>();
+        for (Entity e : mEntities){
+            if (e instanceof Enemy){
+                ret.add((Enemy) e);
+            }
+        }
+
+        return ret;
+    }
+
+    public Array<Missle> getMissiles(){
+        Array<Missle> ret = new Array<Missle>();
+        for (Entity e : mEntities){
+            if (e instanceof Missle){
+                ret.add((Missle) e);
+            }
+        }
+
+        return ret;
+    }
+
+    public boolean isGameOver(){
+        return getEnemies().size <= 0;
     }
 }

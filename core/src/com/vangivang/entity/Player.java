@@ -10,8 +10,12 @@ import com.vangivang.game.TextureManager;
  */
 public class Player extends Entity {
 
-    public Player(Vector2 position, Vector2 direction) {
+    private final EntityManager mEntityManager;
+    private long mLastFired = 0;
+
+    public Player(Vector2 position, Vector2 direction, EntityManager entityManager) {
         super(TextureManager.PLAYER, position, direction);
+        mEntityManager = entityManager;
     }
 
     @Override
@@ -24,6 +28,13 @@ public class Player extends Entity {
             setDirection(-300, 0);
         } else {
             setDirection(0, 0);
+        }
+
+        if (Gdx.input.isKeyPressed(Input.Keys.SPACE)){
+            if (System.currentTimeMillis() - mLastFired >= 250){
+                mEntityManager.addEntity(new Missle(new Vector2(((mPosition.x + (mTexture.getWidth() / 2)) - (TextureManager.MISSILE.getWidth() / 2)), mPosition.y), mDirection));
+                mLastFired = System.currentTimeMillis();
+            }
         }
 
     }
