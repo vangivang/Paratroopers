@@ -16,7 +16,7 @@ public class EntityManager {
     private Player mPlayer;
 
     public EntityManager(int enemyAmount){
-        mPlayer = new Player(new Vector2(240,15), new Vector2(0,0), this);
+        mPlayer = new Player(new Vector2((MainGame.WIDTH / 2) - (TextureManager.PLAYER.getWidth() / 2),-15), new Vector2(0,0), this);
         for (int i = 0; i < enemyAmount; i++) {
             float y = MathUtils.random((MainGame.HEIGHT / 3) * 2, MainGame.HEIGHT - TextureManager.ENEMY.getHeight());
             float x = MathUtils.random(MainGame.WIDTH, MainGame.WIDTH * 2);

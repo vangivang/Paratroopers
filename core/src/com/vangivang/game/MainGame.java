@@ -52,7 +52,6 @@ public class MainGame extends ApplicationAdapter {
 
     @Override
     public void pause() {
-        Gdx.app.log("###", "pause in MainGame");
         if (ScreenManager.getCurrentScreen() != null){
             ScreenManager.getCurrentScreen().pause();
         }
@@ -60,7 +59,6 @@ public class MainGame extends ApplicationAdapter {
 
     @Override
     public void resume() {
-        Gdx.app.log("###", "resume in MainGame");
         if (ScreenManager.getCurrentScreen() != null){
             ScreenManager.getCurrentScreen().resume();
         }
