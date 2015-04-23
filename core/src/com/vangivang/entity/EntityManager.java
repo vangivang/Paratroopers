@@ -23,6 +23,14 @@ public class EntityManager {
             float speed = MathUtils.random(2, 5);
             addEntity(new Enemy(new Vector2(x, y), new Vector2(-speed, 0)));
         }
+
+        float x = 0;
+        float bombsSpeed;
+        for (int i = 0; i < 6; i++) {
+            bombsSpeed = MathUtils.random(4.5f, 7);
+            x += 120;
+            addEntity(new EnemyBomb(TextureManager.ENEMY_BOMB, 35, 49, new Vector2(x, MainGame.HEIGHT), new Vector2(0, -bombsSpeed)));
+        }
     }
 
     public void update(){

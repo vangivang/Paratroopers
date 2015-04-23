@@ -7,6 +7,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.vangivang.screens.GameScreen;
 import com.vangivang.screens.ScreenManager;
 
+import box2dLight.RayHandler;
+
 public class MainGame extends ApplicationAdapter {
 
     public static int WIDTH = 800;
