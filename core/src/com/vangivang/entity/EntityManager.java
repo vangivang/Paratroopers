@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.Pool;
 import com.vangivang.game.MainGame;
 import com.vangivang.game.TextureManager;
 
@@ -12,24 +13,38 @@ import com.vangivang.game.TextureManager;
  */
 public class EntityManager {
 
-    private final Array<Entity> mEntities = new Array<Entity>();
+    private static EntityManager mInstance = null;
+    private static Array<Entity> mEntities;
+    private Array<EnemyBomb> mActiveEnemyBombs;
+    private Pool<EnemyBomb> mEnemyBombPool = new Pool<EnemyBomb>() {
+        @Override
+        protected EnemyBomb newObject() {
+            int speed = MathUtils.random(4, 7);
+            return new EnemyBomb(TextureManager.ENEMY_BOMB_SPRITE_WIDTH, TextureManager.ENEMY_BOMB_SPRITE_HEIGHT, new Vector2(0,0), new Vector2(0, -speed));
+        }
+    };
+
     private Player mPlayer;
 
-    public EntityManager(int enemyAmount){
-        mPlayer = new Player(new Vector2((MainGame.WIDTH / 2) - (TextureManager.PLAYER.getWidth() / 2),-15), new Vector2(0,0), this);
+    public static EntityManager getInstance(){
+        if (mInstance == null){
+            mInstance = new EntityManager(10);
+        }
+
+        return mInstance;
+    }
+
+    private EntityManager(int enemyAmount){
+        mEntities = new Array<Entity>();
+        mActiveEnemyBombs = new Array<EnemyBomb>();
+
+        mPlayer = new Player(new Vector2((MainGame.WIDTH / 2) - (TextureManager.PLAYER.getWidth() / 2),-15), new Vector2(0,0));
+
         for (int i = 0; i < enemyAmount; i++) {
             float y = MathUtils.random((MainGame.HEIGHT / 3) * 2, MainGame.HEIGHT - TextureManager.ENEMY.getHeight());
             float x = MathUtils.random(MainGame.WIDTH, MainGame.WIDTH * 2);
             float speed = MathUtils.random(2, 5);
             addEntity(new Enemy(new Vector2(x, y), new Vector2(-speed, 0)));
-        }
-
-        float x = 0;
-        float bombsSpeed;
-        for (int i = 0; i < 6; i++) {
-            bombsSpeed = MathUtils.random(4.5f, 7);
-            x += 120;
-            addEntity(new EnemyBomb(TextureManager.ENEMY_BOMB, 35, 49, new Vector2(x, MainGame.HEIGHT), new Vector2(0, -bombsSpeed)));
         }
     }
 
@@ -44,6 +59,18 @@ public class EntityManager {
             }
         }
 
+        for (Enemy e : getEnemies()){
+            shootEnemyBomb(e);
+        }
+
+        for (EnemyBomb bomb : mActiveEnemyBombs){
+            bomb.update();
+            if (!bomb.isAlive()){
+                mEnemyBombPool.free(bomb);
+                mActiveEnemyBombs.removeValue(bomb, false);
+            }
+        }
+
         mPlayer.update();
         checkColissions();
 
@@ -54,6 +81,9 @@ public class EntityManager {
             e.render(sb);
         }
 
+        for (EnemyBomb bomb : mActiveEnemyBombs){
+            bomb.render(sb);
+        }
         mPlayer.render(sb);
     }
 
@@ -92,6 +122,15 @@ public class EntityManager {
         }
 
         return ret;
+    }
+
+    private void shootEnemyBomb(Enemy shootingEnemy){
+        if (System.currentTimeMillis() - shootingEnemy.getLastBombFired() >= 1000){
+            EnemyBomb bomb = mEnemyBombPool.obtain();
+            bomb.initBomb(shootingEnemy.mPosition.x + shootingEnemy.mTexture.getWidth() / 2 - TextureManager.ENEMY_BOMB_SPRITE_WIDTH / 2, shootingEnemy.mPosition.y);
+            mActiveEnemyBombs.add(bomb);
+            shootingEnemy.setLastBombFired(System.currentTimeMillis());
+        }
     }
 
     public boolean isGameOver(){

@@ -20,8 +20,7 @@ public class GameScreen extends Screen {
     @Override
     public void create() {
         mCamera = new OrthoCamera();
-        mEntityManager = new EntityManager(5);
-
+        mEntityManager = EntityManager.getInstance();
     }
 
     @Override
