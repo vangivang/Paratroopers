@@ -25,10 +25,11 @@ public class EntityManager {
     };
 
     private Player mPlayer;
+    private Controller mController;
 
     public static EntityManager getInstance(){
         if (mInstance == null){
-            mInstance = new EntityManager(10);
+            mInstance = new EntityManager(2);
         }
 
         return mInstance;
@@ -46,6 +47,8 @@ public class EntityManager {
             float speed = MathUtils.random(2, 5);
             addEntity(new Enemy(new Vector2(x, y), new Vector2(-speed, 0)));
         }
+
+        mController = new Controller(new Vector2((MainGame.WIDTH - TextureManager.CONTROLLER_BASE.getWidth()) - 18, 20));
     }
 
     public void update(){
@@ -71,6 +74,7 @@ public class EntityManager {
             }
         }
 
+        mController.update();
         mPlayer.update();
         checkColissions();
 
@@ -85,6 +89,7 @@ public class EntityManager {
             bomb.render(sb);
         }
         mPlayer.render(sb);
+        mController.render(sb);
     }
 
     public void addEntity(Entity entity){
