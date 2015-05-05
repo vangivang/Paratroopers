@@ -5,6 +5,7 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Pool;
+import com.vangivang.camera.OrthoCamera;
 import com.vangivang.game.MainGame;
 import com.vangivang.game.TextureManager;
 
@@ -26,20 +27,26 @@ public class EntityManager {
 
     private Player mPlayer;
     private Controller mController;
+    private OrthoCamera mCamera;
 
     public static EntityManager getInstance(){
         if (mInstance == null){
-            mInstance = new EntityManager(2);
+            mInstance = new EntityManager(10);
         }
 
         return mInstance;
+    }
+
+    public void setOrthoCamera(OrthoCamera camera){
+        mCamera = camera;
+        mController.setCamera(mCamera);
     }
 
     private EntityManager(int enemyAmount){
         mEntities = new Array<Entity>();
         mActiveEnemyBombs = new Array<EnemyBomb>();
 
-        mPlayer = new Player(new Vector2((MainGame.WIDTH / 2) - (TextureManager.PLAYER.getWidth() / 2),-15), new Vector2(0,0));
+        mPlayer = new Player(new Vector2((MainGame.WIDTH / 2) - (TextureManager.PLAYER_BASE.getWidth() / 2), 0), new Vector2(0,0));
 
         for (int i = 0; i < enemyAmount; i++) {
             float y = MathUtils.random((MainGame.HEIGHT / 3) * 2, MainGame.HEIGHT - TextureManager.ENEMY.getHeight());
@@ -48,7 +55,7 @@ public class EntityManager {
             addEntity(new Enemy(new Vector2(x, y), new Vector2(-speed, 0)));
         }
 
-        mController = new Controller(new Vector2((MainGame.WIDTH - TextureManager.CONTROLLER_BASE.getWidth()) - 18, 20));
+        mController = new Controller(mPlayer, new Vector2((MainGame.WIDTH - TextureManager.CONTROLLER_BASE.getWidth()) - 18, 20));
     }
 
     public void update(){

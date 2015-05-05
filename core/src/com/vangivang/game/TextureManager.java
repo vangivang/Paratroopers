@@ -8,7 +8,8 @@ import com.badlogic.gdx.graphics.Texture;
  */
 public class TextureManager {
 
-    public static final Texture PLAYER = new Texture(Gdx.files.internal("player.png"));
+    public static final Texture PLAYER_BASE = new Texture(Gdx.files.internal("cnn_player_base.png"));
+    public static final Texture PLAYER_CANNON = new Texture(Gdx.files.internal("cnn_player_cannon.png"));
     public static final Texture ENEMY = new Texture(Gdx.files.internal("enemy_diffuse.png"));
     public static final Texture MISSILE = new Texture(Gdx.files.internal("missile.png"));
     public static final Texture BACKGROUND = new Texture(Gdx.files.internal("background.png"));
