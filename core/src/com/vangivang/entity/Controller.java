@@ -76,7 +76,7 @@ public class Controller implements InputProcessor{
 //                }
 
 //            }
-                mPlayer.setRotation(getAngle(touchY, touchX));
+//                mPlayer.setRotation(getAngle(touchY, touchX));
         }
     }
 

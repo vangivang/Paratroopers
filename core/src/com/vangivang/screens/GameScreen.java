@@ -1,27 +1,30 @@
 package com.vangivang.screens;
 
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Vector2;
-import com.vangivang.camera.OrthoCamera;
+import com.badlogic.gdx.utils.viewport.Viewport;
 import com.vangivang.entity.EntityManager;
-import com.vangivang.entity.Player;
+import com.vangivang.game.MainGame;
 import com.vangivang.game.TextureManager;
+
 
 /**
  * Created by alonm on 4/14/15.
  */
 public class GameScreen extends Screen {
 
-    private OrthoCamera mCamera;
+    private OrthographicCamera mCamera;
+    private Viewport mViewPort;
     private EntityManager mEntityManager;
     private Texture mBackground = TextureManager.BACKGROUND;
 
     @Override
     public void create() {
-        mCamera = new OrthoCamera();
+        mCamera = new OrthographicCamera(MainGame.WIDTH, MainGame.HEIGHT);
+        mCamera.translate(MainGame.WIDTH / 2, MainGame.HEIGHT / 2);
+        mCamera.update();
         mEntityManager = EntityManager.getInstance();
-        mEntityManager.setOrthoCamera(mCamera);
     }
 
     @Override
@@ -41,8 +44,6 @@ public class GameScreen extends Screen {
 
     @Override
     public void resize(int width, int height) {
-        // Keep aspect ratio the same for all devices
-        mCamera.resize();
     }
 
     @Override
