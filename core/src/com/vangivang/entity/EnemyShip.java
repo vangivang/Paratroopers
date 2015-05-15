@@ -21,7 +21,7 @@ public class EnemyShip extends Entity{
     };
 
     public EnemyShip(Vector2 position, Vector2 direction) {
-        super(TextureManager.ENEMY, position, direction);
+        super(TextureManager.getInstance().getTextureByName(TextureManager.ENEMY), position, direction);
     }
 
     @Override
@@ -29,7 +29,7 @@ public class EnemyShip extends Entity{
         mPosition.add(mDirection);
         if (mPosition.x <= -mTexture.getWidth()){
             mPosition.x = MathUtils.random(MainGame.WIDTH, MainGame.WIDTH + mTexture.getWidth());
-            mPosition.y = MathUtils.random((MainGame.HEIGHT / 3) * 2, MainGame.HEIGHT - TextureManager.ENEMY.getHeight());
+            mPosition.y = MathUtils.random((MainGame.HEIGHT / 3) * 2, MainGame.HEIGHT - TextureManager.getInstance().getTextureByName(TextureManager.ENEMY).getHeight());
         }
 
         dropBomb();

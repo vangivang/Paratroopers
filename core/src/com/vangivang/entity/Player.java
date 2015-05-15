@@ -12,62 +12,70 @@ import com.vangivang.game.TextureManager;
 /**
  * Created by alonm on 4/14/15.
  */
-public class Player  {
+public class Player {
 
     private long mLastFired = 0;
-    private Vector2 mPosition;
-    private Vector2 mDirection;
+    private Vector2 mBasePosition;
+    private Vector2 mBaseDirection;
     private Sprite mCannonSprite;
-    private Texture mBase;
-    private double mRotation = 0;
+    private Texture mBaseTexture;
     private OrthoCamera mCamera;
 
     public Player(Vector2 position, Vector2 direction) {
-        mPosition = position;
-        mDirection = direction;
-        mCannonSprite = new Sprite(TextureManager.PLAYER_CANNON);
-        mCannonSprite.setOrigin(mCannonSprite.getWidth() / 2, mCannonSprite.getHeight() / 2 - 20);
-        mBase = TextureManager.PLAYER_BASE;
+        mBaseTexture = TextureManager.getInstance().getTextureByName(TextureManager.PLAYER_BASE);
+        mBasePosition = position;
+        mBaseDirection = direction;
+
         mCamera = new OrthoCamera();
+        mCamera.resize();
+
+        mCannonSprite = new Sprite(TextureManager.getInstance().getTextureByName(TextureManager
+                .PLAYER_CANNON));
+        mCannonSprite.setOrigin(mCannonSprite.getWidth() / 2, mCannonSprite.getHeight() / 2 - 20);
+        mCannonSprite.setPosition(mBasePosition.x + mBaseTexture.getWidth() / 2 - TextureManager
+                .getInstance().getTextureByName(TextureManager
+                        .PLAYER_CANNON).getWidth() / 2, mBasePosition.y + 15);
     }
 
-    public void setRotation(float x1, float y1, float x2, float y2){
-
+    public void setCannonRotation(float x1, float y1, float x2, float y2) {
         float normalX = x2 - x1;
         float normalY = y2 - y1;
-        mRotation = Math.atan2(normalY, normalX) * 180 / Math.PI;
-
+        float mRotation = (float) ((Math.atan2(normalY, normalX) * 180 / Math.PI) + 90);
+        mCannonSprite.setRotation(mRotation);
     }
 
     public void update() {
-        mPosition.add(mDirection);
+        onPlayerTouchedScreen();
+        onPlayerFiredMissileWithKeyboard();
+    }
 
-        if (Gdx.input.isKeyPressed(Input.Keys.D)){
-            mRotation -= 3;
-        } else if (Gdx.input.isKeyPressed(Input.Keys.A)){
-            mRotation += 3;
-        }
-
-        if (Gdx.input.isTouched()){
-            float touchX = Gdx.input.getX();
-            float touchY = Gdx.input.getY();
-            Vector2 vector = mCamera.unprojectCoordinates(touchX, touchY);
-            setRotation(vector.x, vector.y, mPosition.x, mPosition.y);
-        }
-
-        if (Gdx.input.isKeyPressed(Input.Keys.SPACE)){
-            if (System.currentTimeMillis() - mLastFired >= 250){
-                EntityManager.getInstance().addEntity(new Missile(new Vector2(((mPosition.x + (mBase.getWidth() / 2)) - (TextureManager.MISSILE.getWidth() / 2)), mPosition.y), mDirection));
+    private void onPlayerFiredMissileWithKeyboard() {
+        if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
+            if (System.currentTimeMillis() - mLastFired >= 250) {
+                EntityManager.getInstance().addEntity(new Missile(new Vector2(((mBasePosition.x +
+                        (mBaseTexture.getWidth() / 2)) - (TextureManager.getInstance()
+                        .getTextureByName(TextureManager.MISSILE).getWidth() / 2)), mBasePosition
+                        .y), mBaseDirection));
                 mLastFired = System.currentTimeMillis();
             }
         }
-
-        mCannonSprite.setPosition(mPosition.x + mBase.getWidth() / 2 - TextureManager.PLAYER_CANNON.getWidth() / 2, mPosition.y + 15);
-        mCannonSprite.setRotation((float) mRotation);
     }
 
-    public void render(SpriteBatch sb){
+    private void onPlayerTouchedScreen() {
+        if (Gdx.input.isTouched()) {
+            Vector2 screenTouch = mCamera.unprojectCoordinates(Gdx.input.getX(), Gdx.input.getY());
+
+            // If the touched point is not within the height of the cannon base, only then
+            // process input
+            if (!(screenTouch.y < mBasePosition.y + mBaseTexture.getHeight() && screenTouch.y >
+                    mBasePosition.y)) {
+                setCannonRotation(screenTouch.x, screenTouch.y, mBasePosition.x, mBasePosition.y);
+            }
+        }
+    }
+
+    public void render(SpriteBatch sb) {
         mCannonSprite.draw(sb);
-        sb.draw(mBase, mPosition.x, mPosition.y);
+        sb.draw(mBaseTexture, mBasePosition.x, mBasePosition.y);
     }
 }

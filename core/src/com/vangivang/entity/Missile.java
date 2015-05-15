@@ -6,11 +6,12 @@ import com.vangivang.game.TextureManager;
 /**
  * Created by alonm on 4/19/15.
  */
-public class Missile extends Entity{
+public class Missile extends Entity {
 
 
     public Missile(Vector2 position, Vector2 direction) {
-        super(TextureManager.MISSILE, position, new Vector2(0, 5));
+        super(TextureManager.getInstance().getTextureByName(TextureManager.MISSILE), position,
+                new Vector2(0, 5));
     }
 
     @Override

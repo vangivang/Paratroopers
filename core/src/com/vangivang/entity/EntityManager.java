@@ -10,7 +10,8 @@ import com.vangivang.game.TextureManager;
 /**
  * Once an entity of any kind or type is added to the world, it should be handeled here.
  * Creation of the entity on the other hand, should be the responsibility of the entities conceptual
- * parent. For instance, an {@link EnemyBomb} will be created by an {@link EnemyShip}. But the EnemyBomb will be
+ * parent. For instance, an {@link EnemyBomb} will be created by an {@link EnemyShip}. But the
+ * EnemyBomb will be
  * handled here as it is now part of the world.
  */
 public class EntityManager {
@@ -21,23 +22,27 @@ public class EntityManager {
     private Array<EnemyBomb> mActiveEnemyBombs;
     private Player mPlayer;
 
-    public static EntityManager getInstance(){
-        if (mInstance == null){
+    public static EntityManager getInstance() {
+        if (mInstance == null) {
             mInstance = new EntityManager(10);
         }
 
         return mInstance;
     }
 
-    private EntityManager(int enemyAmount){
+    private EntityManager(int enemyAmount) {
 
         mEntities = new Array<Entity>();
         mActiveEnemyBombs = new Array<EnemyBomb>();
-        mPlayer = new Player(new Vector2((MainGame.WIDTH / 2) - (TextureManager.PLAYER_BASE.getWidth() / 2), 0), new Vector2(0,0));
+        mPlayer = new Player(new Vector2((MainGame.WIDTH / 2) - (TextureManager.getInstance()
+                .getTextureByName(TextureManager.PLAYER_BASE).getWidth() / 2), 0), new Vector2(0,
+                0));
 
         // Add enemies in random position to entities list
         for (int i = 0; i < enemyAmount; i++) {
-            float y = MathUtils.random((MainGame.HEIGHT / 3) * 2, MainGame.HEIGHT - TextureManager.ENEMY.getHeight());
+            float y = MathUtils.random((MainGame.HEIGHT / 3) * 2, MainGame.HEIGHT -
+                    TextureManager.getInstance().getTextureByName(TextureManager.ENEMY).getHeight
+                            ());
             float x = MathUtils.random(MainGame.WIDTH, MainGame.WIDTH * 2);
             float speed = MathUtils.random(2, 5);
             addEntity(new EnemyShip(new Vector2(x, y), new Vector2(-speed, 0)));
@@ -45,7 +50,7 @@ public class EntityManager {
 
     }
 
-    public void update(){
+    public void update() {
         updateEntities();
         updatePlayerMissiles();
         updateEnemyBombs();
@@ -54,7 +59,7 @@ public class EntityManager {
 
     }
 
-    public void render(SpriteBatch sb){
+    public void render(SpriteBatch sb) {
         renderEntities(sb);
         renderEnemyBombs(sb);
         renderPlayer(sb);
@@ -65,24 +70,24 @@ public class EntityManager {
     }
 
     private void updateEnemyBombs() {
-        for (EnemyBomb bomb : getActiveEnemyBombs()){
+        for (EnemyBomb bomb : getActiveEnemyBombs()) {
             bomb.update();
-            if (!bomb.isAlive()){
+            if (!bomb.isAlive()) {
                 removeEnemyBombEntity(bomb);
             }
         }
     }
 
     private void updatePlayerMissiles() {
-        for (Missile m : getMissiles()){
-            if (m.mPosition.y > MainGame.HEIGHT){
+        for (Missile m : getMissiles()) {
+            if (m.mPosition.y > MainGame.HEIGHT) {
                 getEntities().removeValue(m, true);
             }
         }
     }
 
     private void updateEntities() {
-        for (Entity e : getEntities()){
+        for (Entity e : getEntities()) {
             e.update();
         }
     }
@@ -92,21 +97,21 @@ public class EntityManager {
     }
 
     private void renderEnemyBombs(SpriteBatch sb) {
-        for (EnemyBomb bomb : getActiveEnemyBombs()){
+        for (EnemyBomb bomb : getActiveEnemyBombs()) {
             bomb.render(sb);
         }
     }
 
     private void renderEntities(SpriteBatch sb) {
-        for (Entity e : getEntities()){
+        for (Entity e : getEntities()) {
             e.render(sb);
         }
     }
 
-    private void checkCollisions(){
-        for (EnemyShip e : getEnemies()){
-            for (Missile m : getMissiles()){
-                if (e.getBounds().overlaps(m.getBounds())){
+    private void checkCollisions() {
+        for (EnemyShip e : getEnemies()) {
+            for (Missile m : getMissiles()) {
+                if (e.getBounds().overlaps(m.getBounds())) {
                     mEntities.removeValue(e, true);
                     mEntities.removeValue(m, true);
                 }
@@ -126,10 +131,10 @@ public class EntityManager {
         return mActiveEnemyBombs;
     }
 
-    private Array<EnemyShip> getEnemies(){
+    private Array<EnemyShip> getEnemies() {
         Array<EnemyShip> ret = new Array<EnemyShip>();
-        for (Entity e : getEntities()){
-            if (e instanceof EnemyShip){
+        for (Entity e : getEntities()) {
+            if (e instanceof EnemyShip) {
                 ret.add((EnemyShip) e);
             }
         }
@@ -137,10 +142,10 @@ public class EntityManager {
         return ret;
     }
 
-    private Array<Missile> getMissiles(){
+    private Array<Missile> getMissiles() {
         Array<Missile> ret = new Array<Missile>();
-        for (Entity e : getEntities()){
-            if (e instanceof Missile){
+        for (Entity e : getEntities()) {
+            if (e instanceof Missile) {
                 ret.add((Missile) e);
             }
         }
@@ -148,19 +153,19 @@ public class EntityManager {
         return ret;
     }
 
-    public void addEnemyBombEntity(EnemyBomb bomb){
+    public void addEnemyBombEntity(EnemyBomb bomb) {
         getActiveEnemyBombs().add(bomb);
     }
 
-    public void removeEnemyBombEntity(EnemyBomb bomb){
+    public void removeEnemyBombEntity(EnemyBomb bomb) {
         getActiveEnemyBombs().removeValue(bomb, true);
     }
 
-    public void addEntity(Entity entity){
+    public void addEntity(Entity entity) {
         getEntities().add(entity);
     }
 
-    public boolean isGameOver(){
+    public boolean isGameOver() {
         return getEnemies().size <= 0;
     }
 }

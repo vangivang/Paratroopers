@@ -24,7 +24,7 @@ public class GameScreen extends BaseScreen {
     public void render(SpriteBatch sb) {
         sb.setProjectionMatrix(mCamera.combined);
         sb.begin();
-        sb.draw(TextureManager.BACKGROUND, 0, 0);
+        sb.draw(TextureManager.getInstance().getTextureByName(TextureManager.BACKGROUND), 0, 0);
         EntityManager.getInstance().render(sb);
         sb.end();
     }

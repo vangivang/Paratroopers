@@ -12,7 +12,7 @@ public class EnemyBomb extends SpriteEntity implements Pool.Poolable{
     private boolean mIsAlive;
 
     public EnemyBomb(int singleSpriteWidth, int singleSpriteHeight, Vector2 position, Vector2 direction) {
-        super(TextureManager.ENEMY_BOMB, singleSpriteWidth, singleSpriteHeight, position, direction);
+        super(TextureManager.getInstance().getTextureByName(TextureManager.ENEMY_BOMB), singleSpriteWidth, singleSpriteHeight, position, direction);
     }
 
     public void initBomb(float posX, float posY){

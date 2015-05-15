@@ -67,7 +67,7 @@ public class Controller implements InputProcessor{
 //                int side = 2;
 ////                float x2 = mBasePosition.x + mBase.getWidth() / 2 - touchX;
 //                mKnobPosition.set(vector.x, mKnobPosition.y);
-////                mPlayer.setRotation(touchX, touchY, touchX + x2, touchY);
+////                mPlayer.setCannonRotation(touchX, touchY, touchX + x2, touchY);
 //                if (vector.x < mBasePosition.x + mBase.getWidth() / 2){
 //                    side = 0;
 //                } else if (vector.x > mBasePosition.x + mBase.getWidth() / 2){
@@ -75,7 +75,7 @@ public class Controller implements InputProcessor{
 //                }
 
 //            }
-//                mPlayer.setRotation(getAngle(touchY, touchX));
+//                mPlayer.setCannonRotation(getAngle(touchY, touchX));
         }
     }
 
@@ -106,7 +106,7 @@ public class Controller implements InputProcessor{
 //        if (getBounds().contains(vector.x, vector.y)){
 //            float x2 = mBasePosition.x + mBase.getWidth() / 2 - screenX;
 //            mKnobPosition.set(vector.x, mKnobPosition.y);
-//            mPlayer.setRotation(screenX, screenY, screenX + x2,screenY);
+//            mPlayer.setCannonRotation(screenX, screenY, screenX + x2,screenY);
 //        }
         return false;
     }
