@@ -5,9 +5,9 @@ package com.vangivang.screens;
  */
 public class ScreenManager {
 
-    private static Screen mCurrentScreen = null;
+    private static BaseScreen mCurrentScreen = null;
 
-    public static void setScreen(Screen screen){
+    public static void setScreen(BaseScreen screen){
         if (mCurrentScreen != null){
             mCurrentScreen.dispose();
         }
@@ -15,7 +15,7 @@ public class ScreenManager {
         mCurrentScreen.create();
     }
 
-    public static Screen getCurrentScreen(){
+    public static BaseScreen getCurrentScreen(){
         return mCurrentScreen;
     }
 

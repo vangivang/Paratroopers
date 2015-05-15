@@ -1,11 +1,18 @@
 package com.vangivang.screens;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.vangivang.camera.OrthoCamera;
 
 /**
  * Created by alonm on 4/14/15.
  */
-public abstract class Screen {
+public abstract class BaseScreen {
+
+    protected OrthoCamera mCamera;
+
+    public BaseScreen(){
+        mCamera = new OrthoCamera();
+    }
 
     public abstract void create();
     public abstract void update();

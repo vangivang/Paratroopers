@@ -6,10 +6,10 @@ import com.vangivang.game.TextureManager;
 /**
  * Created by alonm on 4/19/15.
  */
-public class Missle extends Entity{
+public class Missile extends Entity{
 
 
-    public Missle(Vector2 position, Vector2 direction) {
+    public Missile(Vector2 position, Vector2 direction) {
         super(TextureManager.MISSILE, position, new Vector2(0, 5));
     }
 

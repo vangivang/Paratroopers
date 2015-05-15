@@ -23,10 +23,6 @@ public abstract class Entity {
         mDirection = direction;
     }
 
-    public Vector2 getPosition() {
-        return mPosition;
-    }
-
     public abstract void update();
 
     public void render(SpriteBatch sb){
