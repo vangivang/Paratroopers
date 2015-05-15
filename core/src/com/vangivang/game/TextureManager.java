@@ -59,4 +59,10 @@ public class TextureManager {
 
         return texture;
     }
+
+    public void dispose(){
+        for (Texture texture : mTextures.values()){
+            texture.dispose();
+        }
+    }
 }

@@ -42,6 +42,7 @@ public class MainGame extends ApplicationAdapter {
         if (ScreenManager.getCurrentScreen() != null){
             ScreenManager.getCurrentScreen().dispose();
         }
+        TextureManager.getInstance().dispose();
         batch.dispose();
     }
 
