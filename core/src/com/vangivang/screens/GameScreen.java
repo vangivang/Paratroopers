@@ -12,11 +12,10 @@ public class GameScreen extends BaseScreen {
 
     @Override
     public void create() {
+
     }
 
-    @Override
     public void update() {
-        mCamera.update();
         EntityManager.getInstance().update();
     }
 
@@ -27,11 +26,6 @@ public class GameScreen extends BaseScreen {
         sb.draw(TextureManager.getInstance().getTextureByName(TextureManager.BACKGROUND), 0, 0);
         EntityManager.getInstance().render(sb);
         sb.end();
-    }
-
-    @Override
-    public void resize(int width, int height) {
-        mCamera.resize();
     }
 
     @Override

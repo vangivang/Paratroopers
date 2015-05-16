@@ -40,7 +40,9 @@ public class EntityManager {
 
         // Add enemies in random position to entities list
         for (int i = 0; i < enemyAmount; i++) {
-            float y = MathUtils.random((MainGame.HEIGHT / 3) * 2, MainGame.HEIGHT -
+            float y = MathUtils.random((TextureManager.getInstance().getTextureByName
+                    (TextureManager.BACKGROUND).getHeight() / 3) * 2, TextureManager.getInstance
+                    ().getTextureByName(TextureManager.BACKGROUND).getHeight() -
                     TextureManager.getInstance().getTextureByName(TextureManager.ENEMY).getHeight
                             ());
             float x = MathUtils.random(MainGame.WIDTH, MainGame.WIDTH * 2);

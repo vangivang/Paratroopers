@@ -2,11 +2,13 @@ package com.vangivang.entity;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
-import com.vangivang.camera.OrthoCamera;
+import com.badlogic.gdx.math.Vector3;
+import com.vangivang.game.MainGame;
 import com.vangivang.game.TextureManager;
 
 /**
@@ -19,15 +21,15 @@ public class Player {
     private Vector2 mBaseDirection;
     private Sprite mCannonSprite;
     private Texture mBaseTexture;
-    private OrthoCamera mCamera;
+    private OrthographicCamera mCamera;
 
     public Player(Vector2 position, Vector2 direction) {
         mBaseTexture = TextureManager.getInstance().getTextureByName(TextureManager.PLAYER_BASE);
         mBasePosition = position;
         mBaseDirection = direction;
 
-        mCamera = new OrthoCamera();
-        mCamera.resize();
+        mCamera = new OrthographicCamera();
+        mCamera.setToOrtho(false, MainGame.WIDTH, MainGame.HEIGHT);
 
         mCannonSprite = new Sprite(TextureManager.getInstance().getTextureByName(TextureManager
                 .PLAYER_CANNON));
@@ -37,10 +39,10 @@ public class Player {
                         .PLAYER_CANNON).getWidth() / 2, mBasePosition.y + 15);
     }
 
-    public void setCannonRotation(float x1, float y1, float x2, float y2) {
-        float normalX = x2 - x1;
-        float normalY = y2 - y1;
-        float mRotation = (float) ((Math.atan2(normalY, normalX) * 180 / Math.PI) + 90);
+    public void setCannonRotation(float touchedX, float touchedY, float originX, float originY) {
+        float normalX = originX - touchedX;
+        float normalY = originY - touchedY;
+        float mRotation = (float) (((Math.atan2(normalY, normalX)) * 180 / Math.PI) + 90);
         mCannonSprite.setRotation(mRotation);
     }
 
@@ -63,18 +65,15 @@ public class Player {
 
     private void onPlayerTouchedScreen() {
         if (Gdx.input.isTouched()) {
-            Vector2 screenTouch = mCamera.unprojectCoordinates(Gdx.input.getX(), Gdx.input.getY());
-
-            // If the touched point is not within the height of the cannon base, only then
-            // process input
-            if (!(screenTouch.y < mBasePosition.y + mBaseTexture.getHeight() && screenTouch.y >
-                    mBasePosition.y)) {
-                setCannonRotation(screenTouch.x, screenTouch.y, mBasePosition.x, mBasePosition.y);
-            }
+            Vector3 touchPos = new Vector3();
+            touchPos.set(Gdx.input.getX(), Gdx.input.getY(), 0);
+            mCamera.unproject(touchPos);
+            setCannonRotation(touchPos.x, touchPos.y, mBasePosition.x, mBasePosition.y);
         }
     }
 
     public void render(SpriteBatch sb) {
+        mCamera.update();
         mCannonSprite.draw(sb);
         sb.draw(mBaseTexture, mBasePosition.x, mBasePosition.y);
     }

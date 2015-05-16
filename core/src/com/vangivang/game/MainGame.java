@@ -7,18 +7,16 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.vangivang.screens.GameScreen;
 import com.vangivang.screens.ScreenManager;
 
-import box2dLight.RayHandler;
-
 public class MainGame extends ApplicationAdapter {
 
     public static int WIDTH = 800;
     public static int HEIGHT = 480;
 
-	SpriteBatch batch;
+	private SpriteBatch mSpriteBatch;
 
 	@Override
 	public void create () {
-		batch = new SpriteBatch();
+		mSpriteBatch = new SpriteBatch();
         ScreenManager.setScreen(new GameScreen());
 
 	}
@@ -33,7 +31,7 @@ public class MainGame extends ApplicationAdapter {
         }
 
         if (ScreenManager.getCurrentScreen() != null){
-            ScreenManager.getCurrentScreen().render(batch);
+            ScreenManager.getCurrentScreen().render(mSpriteBatch);
         }
 	}
 
@@ -43,7 +41,7 @@ public class MainGame extends ApplicationAdapter {
             ScreenManager.getCurrentScreen().dispose();
         }
         TextureManager.getInstance().dispose();
-        batch.dispose();
+        mSpriteBatch.dispose();
     }
 
     @Override

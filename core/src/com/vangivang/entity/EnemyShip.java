@@ -29,7 +29,12 @@ public class EnemyShip extends Entity{
         mPosition.add(mDirection);
         if (mPosition.x <= -mTexture.getWidth()){
             mPosition.x = MathUtils.random(MainGame.WIDTH, MainGame.WIDTH + mTexture.getWidth());
-            mPosition.y = MathUtils.random((MainGame.HEIGHT / 3) * 2, MainGame.HEIGHT - TextureManager.getInstance().getTextureByName(TextureManager.ENEMY).getHeight());
+
+            mPosition.y = MathUtils.random((TextureManager.getInstance().getTextureByName
+                    (TextureManager.BACKGROUND).getHeight() / 3) * 2, TextureManager.getInstance
+                    ().getTextureByName(TextureManager.BACKGROUND).getHeight() -
+                    TextureManager.getInstance().getTextureByName(TextureManager.ENEMY).getHeight
+                            ());
         }
 
         dropBomb();
