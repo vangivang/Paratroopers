@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
+import com.vangivang.game.EnvironmentSettings;
 import com.vangivang.game.MainGame;
 import com.vangivang.game.TextureManager;
 
@@ -24,7 +25,7 @@ public class EntityManager {
 
     public static EntityManager getInstance() {
         if (mInstance == null) {
-            mInstance = new EntityManager(10);
+            mInstance = new EntityManager(EnvironmentSettings.NUMBER_OF_ENEMEY_SHIPS);
         }
 
         return mInstance;

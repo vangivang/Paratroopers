@@ -49,6 +49,7 @@ public class Player {
     public void update() {
         onPlayerTouchedScreen();
         onPlayerFiredMissileWithKeyboard();
+
     }
 
     private void onPlayerFiredMissileWithKeyboard() {

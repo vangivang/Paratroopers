@@ -1,8 +1,10 @@
 package com.vangivang.entity;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Pool;
+import com.vangivang.game.EnvironmentSettings;
 import com.vangivang.game.MainGame;
 import com.vangivang.game.TextureManager;
 
@@ -15,7 +17,7 @@ public class EnemyShip extends Entity{
     private Pool<EnemyBomb> mEnemyBombPool = new Pool<EnemyBomb>() {
         @Override
         protected EnemyBomb newObject() {
-            int speed = MathUtils.random(4, 7);
+            int speed = MathUtils.random(EnvironmentSettings.DROP_BOMB_SPEED_LOWER_LIMIT, EnvironmentSettings.DROP_BOMB_SPEED_UPPER_LIMIT);
             return new EnemyBomb(TextureManager.ENEMY_BOMB_SPRITE_WIDTH, TextureManager.ENEMY_BOMB_SPRITE_HEIGHT, new Vector2(0,0), new Vector2(0, -speed));
         }
     };
@@ -42,7 +44,7 @@ public class EnemyShip extends Entity{
 
 
     public void dropBomb(){
-        if (System.currentTimeMillis() - getLastBombFired() >= 1000){
+        if (System.currentTimeMillis() - getLastBombFired() >= EnvironmentSettings.DROP_BOMB_INTERVAL){
             EnemyBomb bomb = mEnemyBombPool.obtain();
             bomb.initBomb(mPosition.x + mTexture.getWidth() / 2 - TextureManager
                     .ENEMY_BOMB_SPRITE_WIDTH / 2, mPosition.y);
