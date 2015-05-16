@@ -68,7 +68,7 @@ public class Player {
             Vector3 touchPos = new Vector3();
             touchPos.set(Gdx.input.getX(), Gdx.input.getY(), 0);
             mCamera.unproject(touchPos);
-            setCannonRotation(touchPos.x, touchPos.y, mBasePosition.x, mBasePosition.y);
+            setCannonRotation(touchPos.x, touchPos.y, mBasePosition.x + mBaseTexture.getWidth() / 2, mBasePosition.y);
         }
     }
 
