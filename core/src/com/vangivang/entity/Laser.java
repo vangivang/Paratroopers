@@ -30,6 +30,40 @@ public class Laser {
 
     public Laser() {
         loadTextures();
+        setLaserColors();
+        setLaserOrigin();
+    }
+
+    public void render(SpriteBatch spriteBatch) {
+        if (mIsReady) {
+            setLaserLength();
+            updateLaserPosition();
+            updateLaserRotation();
+            drawLaser(spriteBatch);
+        }
+    }
+
+    private void setLaserLength() {
+        mid1.setSize(mid1.getWidth(), mDistance);
+        mid2.setSize(mid1.getWidth(), mDistance);
+    }
+
+    private void setLaserColors() {
+        begin1.setColor(mColor);
+        begin2.setColor(mRayColor);
+        mid1.setColor(mColor);
+        mid2.setColor(mRayColor);
+        end1.setColor(mColor);
+        end2.setColor(mRayColor);
+    }
+
+    private void setLaserOrigin() {
+        begin1.setOrigin(begin1.getWidth() / 2, 32);
+        begin2.setOrigin(begin1.getWidth() / 2, 32);
+        mid1.setOrigin(mid1.getWidth() / 2, -begin1.getHeight() + 32);
+        mid2.setOrigin(mid2.getWidth() / 2, -begin1.getHeight() + 32);
+        end1.setOrigin(mid1.getWidth() / 2, (-begin1.getHeight() - mid1.getHeight()) + 32);
+        end2.setOrigin(mid2.getWidth() / 2, (-begin1.getHeight() - mid2.getHeight()) + 32);
     }
 
     private void loadTextures() {
@@ -41,52 +75,35 @@ public class Laser {
         end2 = new Sprite(TextureManager.getInstance().getTextureByName(TextureManager.BEAM_END_OVERLAY));
     }
 
-    public void render(SpriteBatch spriteBatch) {
-        if (mIsReady) {
-            begin1.setColor(mColor);
-            begin2.setColor(mRayColor);
-            mid1.setColor(mColor);
-            mid2.setColor(mRayColor);
-            end1.setColor(mColor);
-            end2.setColor(mRayColor);
+    private void drawLaser(SpriteBatch spriteBatch) {
+        spriteBatch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE);
 
-            mid1.setSize(mid1.getWidth(), mDistance);
-            mid2.setSize(mid1.getWidth(), mDistance);
+        begin1.draw(spriteBatch);
+        begin2.draw(spriteBatch);
+        mid1.draw(spriteBatch);
+        mid2.draw(spriteBatch);
+        end1.draw(spriteBatch);
+        end2.draw(spriteBatch);
 
-            begin1.setPosition(mPosition.x, mPosition.y);
-            begin2.setPosition(mPosition.x, mPosition.y);
+        spriteBatch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+    }
 
-            mid1.setPosition(begin1.getX(), begin1.getY() + begin1.getHeight());
-            mid2.setPosition(begin1.getX(), begin1.getY() + begin1.getHeight());
+    private void updateLaserRotation() {
+        begin1.setRotation(mRotation);
+        begin2.setRotation(mRotation);
+        mid1.setRotation(mRotation);
+        mid2.setRotation(mRotation);
+        end1.setRotation(mRotation);
+        end2.setRotation(mRotation);
+    }
 
-            end1.setPosition(begin1.getX(), begin1.getY() + begin1.getHeight() + mid1.getHeight());
-            end2.setPosition(begin1.getX(), begin1.getY() + begin1.getHeight() + mid1.getHeight());
-
-            begin1.setOrigin(begin1.getWidth() / 2, 32);
-            begin2.setOrigin(begin1.getWidth() / 2, 32);
-            mid1.setOrigin(mid1.getWidth() / 2, -begin1.getHeight() + 32);
-            mid2.setOrigin(mid2.getWidth() / 2, -begin1.getHeight() + 32);
-            end1.setOrigin(mid1.getWidth() / 2, (-begin1.getHeight() - mid1.getHeight()) + 32);
-            end2.setOrigin(mid2.getWidth() / 2, (-begin1.getHeight() - mid2.getHeight()) + 32);
-
-            begin1.setRotation(mRotation);
-            begin2.setRotation(mRotation);
-            mid1.setRotation(mRotation);
-            mid2.setRotation(mRotation);
-            end1.setRotation(mRotation);
-            end2.setRotation(mRotation);
-
-            spriteBatch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE);
-
-            begin1.draw(spriteBatch);
-            begin2.draw(spriteBatch);
-            mid1.draw(spriteBatch);
-            mid2.draw(spriteBatch);
-            end1.draw(spriteBatch);
-            end2.draw(spriteBatch);
-
-            spriteBatch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
-        }
+    private void updateLaserPosition() {
+        begin1.setPosition(mPosition.x, mPosition.y);
+        begin2.setPosition(mPosition.x, mPosition.y);
+        mid1.setPosition(begin1.getX(), begin1.getY() + begin1.getHeight());
+        mid2.setPosition(begin1.getX(), begin1.getY() + begin1.getHeight());
+        end1.setPosition(begin1.getX(), begin1.getY() + begin1.getHeight() + mid1.getHeight());
+        end2.setPosition(begin1.getX(), begin1.getY() + begin1.getHeight() + mid1.getHeight());
     }
 
     public void setIsReady(boolean isReady) {

@@ -85,7 +85,7 @@ public class Player {
     }
 
     private void activateBeam() {
-        mLaser.setPosition(new Vector2(368, (mCannonSprite.getVertices()[SpriteBatch.Y1] - 20)));
+        mLaser.setPosition(new Vector2(368, (mCannonSprite.getY() + mCannonSprite.getHeight() - 20)));
         mLaser.setRotation(mRotation);
         setLaserReady(true);
     }
