@@ -1,6 +1,8 @@
 package com.vangivang.screens;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Vector2;
 import com.vangivang.entity.EntityManager;
 import com.vangivang.game.TextureManager;
 
@@ -10,9 +12,11 @@ import com.vangivang.game.TextureManager;
  */
 public class GameScreen extends BaseScreen {
 
+    private ShapeRenderer mShapeRender;
+
     @Override
     public void create() {
-
+        mShapeRender = new ShapeRenderer();
     }
 
     public void update() {
@@ -26,6 +30,16 @@ public class GameScreen extends BaseScreen {
         sb.draw(TextureManager.getInstance().getTextureByName(TextureManager.BACKGROUND), 0, 0);
         EntityManager.getInstance().render(sb);
         sb.end();
+        Vector2 point = EntityManager.getInstance().getPlayerForDebug().getCannonPointOfInterestForDebug();
+        drawCircleAtPoint(new Vector2(point.x, point.y));
+
+    }
+
+    public void drawCircleAtPoint(Vector2 point){
+        mShapeRender.begin(ShapeRenderer.ShapeType.Filled);
+        mShapeRender.setColor(1, 1, 0, 1);
+        mShapeRender.circle(point.x, point.y, 10);
+        mShapeRender.end();
     }
 
     @Override

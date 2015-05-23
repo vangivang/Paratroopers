@@ -171,4 +171,8 @@ public class EntityManager {
     public boolean isGameOver() {
         return getEnemies().size <= 0;
     }
+
+    public Player getPlayerForDebug(){
+        return mPlayer;
+    }
 }

@@ -106,14 +106,12 @@ public class Player {
             mLaser.render(sb);
         }
         sb.draw(mBaseTexture, mBasePosition.x, mBasePosition.y);
-        drawCircleAtPoint(new Vector2(50, 300));
+
     }
 
-    public void drawCircleAtPoint(Vector2 point){
-        ShapeRenderer shapeRenderer = new ShapeRenderer();
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        shapeRenderer.setColor(1, 1, 0, 1);
-        shapeRenderer.circle(point.x, point.y, 10);
-        shapeRenderer.end();
+    public Vector2 getCannonPointOfInterestForDebug() {
+        Vector3 vec = new Vector3(mCannonSprite.getVertices()[SpriteBatch.X1], mCannonSprite.getVertices()[SpriteBatch.Y1], 0);
+        mCamera.project(vec);
+        return new Vector2(vec.x, vec.y);
     }
 }
