@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.vangivang.game.MainGame;
@@ -105,5 +106,14 @@ public class Player {
             mLaser.render(sb);
         }
         sb.draw(mBaseTexture, mBasePosition.x, mBasePosition.y);
+        drawCircleAtPoint(new Vector2(50, 300));
+    }
+
+    public void drawCircleAtPoint(Vector2 point){
+        ShapeRenderer shapeRenderer = new ShapeRenderer();
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+        shapeRenderer.setColor(1, 1, 0, 1);
+        shapeRenderer.circle(point.x, point.y, 10);
+        shapeRenderer.end();
     }
 }
