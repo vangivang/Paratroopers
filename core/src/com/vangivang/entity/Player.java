@@ -2,6 +2,7 @@ package com.vangivang.entity;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -22,6 +23,8 @@ public class Player {
     private Sprite mCannonSprite;
     private Texture mBaseTexture;
     private OrthographicCamera mCamera;
+    private Laser mLaser;
+    private float mRotation = 0;
 
     public Player(Vector2 position, Vector2 direction) {
         mBaseTexture = TextureManager.getInstance().getTextureByName(TextureManager.PLAYER_BASE);
@@ -37,12 +40,17 @@ public class Player {
         mCannonSprite.setPosition(mBasePosition.x + mBaseTexture.getWidth() / 2 - TextureManager
                 .getInstance().getTextureByName(TextureManager
                         .PLAYER_CANNON).getWidth() / 2, mBasePosition.y + 15);
+
+        mLaser = new Laser();
+        mLaser.setDistance(500);
+        mLaser.setBeamColor(Color.RED);
+        mLaser.setOverlayColor(Color.WHITE);
     }
 
     public void setCannonRotation(float touchedX, float touchedY, float originX, float originY) {
         float normalX = originX - touchedX;
         float normalY = originY - touchedY;
-        float mRotation = (float) (((Math.atan2(normalY, normalX)) * 180 / Math.PI) + 90);
+        mRotation = (float) (((Math.atan2(normalY, normalX)) * 180 / Math.PI) + 90);
         mCannonSprite.setRotation(mRotation);
     }
 
@@ -70,12 +78,32 @@ public class Player {
             touchPos.set(Gdx.input.getX(), Gdx.input.getY(), 0);
             mCamera.unproject(touchPos);
             setCannonRotation(touchPos.x, touchPos.y, mBasePosition.x + mBaseTexture.getWidth() / 2, mBasePosition.y);
+            activateBeam();
+        } else {
+            terminateBeam();
         }
+    }
+
+    private void activateBeam() {
+        mLaser.setPosition(new Vector2(368, (mCannonSprite.getVertices()[SpriteBatch.Y1] - 20)));
+        mLaser.setRotation(mRotation);
+        setLaserReady(true);
+    }
+
+    private void terminateBeam(){
+        setLaserReady(false);
+    }
+
+    private void setLaserReady(boolean isReady){
+        mLaser.setIsReady(isReady);
     }
 
     public void render(SpriteBatch sb) {
         mCamera.update();
         mCannonSprite.draw(sb);
+        if (mLaser != null){
+            mLaser.render(sb);
+        }
         sb.draw(mBaseTexture, mBasePosition.x, mBasePosition.y);
     }
 }

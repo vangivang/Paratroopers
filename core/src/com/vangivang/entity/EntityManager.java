@@ -39,7 +39,7 @@ public class EntityManager {
                 .getTextureByName(TextureManager.PLAYER_BASE).getWidth() / 2), 0), new Vector2(0,
                 0));
 
-        // Add enemies in random position to entities list
+        // Add enemies in random mPosition to entities list
         for (int i = 0; i < enemyAmount; i++) {
             float y = MathUtils.random((TextureManager.getInstance().getTextureByName
                     (TextureManager.BACKGROUND).getHeight() / 3) * 2, TextureManager.getInstance
