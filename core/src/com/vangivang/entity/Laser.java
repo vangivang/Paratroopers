@@ -62,8 +62,8 @@ public class Laser {
         begin2.setOrigin(begin1.getWidth() / 2, 32);
         mid1.setOrigin(mid1.getWidth() / 2, -begin1.getHeight() + 32);
         mid2.setOrigin(mid2.getWidth() / 2, -begin1.getHeight() + 32);
-        end1.setOrigin(mid1.getWidth() / 2, (-begin1.getHeight() - mid1.getHeight()) + 32);
-        end2.setOrigin(mid2.getWidth() / 2, (-begin1.getHeight() - mid2.getHeight()) + 32);
+        end1.setOrigin(mid1.getWidth() / 2, -(begin1.getHeight() + mid1.getHeight()) + 32);
+        end2.setOrigin(mid2.getWidth() / 2, -(begin1.getHeight() + mid1.getHeight()) + 32);
     }
 
     private void loadTextures() {
@@ -128,5 +128,9 @@ public class Laser {
 
     public void setRotation(float rotation) {
         mRotation = rotation;
+    }
+
+    public Vector2 getOriginPoint(){
+        return new Vector2(begin1.getOriginX(), begin1.getOriginY());
     }
 }

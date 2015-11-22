@@ -43,7 +43,7 @@ public class Player {
                         .PLAYER_CANNON).getWidth() / 2, mBasePosition.y + 15);
 
         mLaser = new Laser();
-        mLaser.setDistance(500);
+        mLaser.setDistance(200);
         mLaser.setBeamColor(Color.RED);
         mLaser.setOverlayColor(Color.WHITE);
     }
@@ -86,7 +86,8 @@ public class Player {
     }
 
     private void activateBeam() {
-        mLaser.setPosition(new Vector2(368, (mCannonSprite.getY() + mCannonSprite.getHeight() - 20)));
+//        mLaser.setPosition(new Vector2(368, (mCannonSprite.getY() + mCannonSprite.getHeight() - 20)));
+        mLaser.setPosition(new Vector2(mCannonSprite.getVertices()[SpriteBatch.X1], mCannonSprite.getVertices()[SpriteBatch.Y1]));
         mLaser.setRotation(mRotation);
         setLaserReady(true);
     }
@@ -110,7 +111,9 @@ public class Player {
     }
 
     public Vector2 getCannonPointOfInterestForDebug() {
-        Vector3 vec = new Vector3(mCannonSprite.getVertices()[SpriteBatch.X1], mCannonSprite.getVertices()[SpriteBatch.Y1], 0);
+//        Vector3 vec = new Vector3(mCannonSprite.getVertices()[SpriteBatch.X1], mCannonSprite.getVertices()[SpriteBatch.Y1], 0);
+        Vector2 vec2 = mLaser.getOriginPoint();
+        Vector3 vec = new Vector3(vec2.x, vec2.y, 0);
         mCamera.project(vec);
         return new Vector2(vec.x, vec.y);
     }

@@ -31,14 +31,14 @@ public class GameScreen extends BaseScreen {
         EntityManager.getInstance().render(sb);
         sb.end();
         Vector2 point = EntityManager.getInstance().getPlayerForDebug().getCannonPointOfInterestForDebug();
-        drawCircleAtPoint(new Vector2(point.x, point.y));
+        drawCircleAtPoint(point.x, point.y);
 
     }
 
-    public void drawCircleAtPoint(Vector2 point){
+    public void drawCircleAtPoint(float x, float y){
         mShapeRender.begin(ShapeRenderer.ShapeType.Filled);
         mShapeRender.setColor(1, 1, 0, 1);
-        mShapeRender.circle(point.x, point.y, 10);
+        mShapeRender.circle(x, y, 10);
         mShapeRender.end();
     }
 
